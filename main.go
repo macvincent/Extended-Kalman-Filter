@@ -9,17 +9,10 @@ import (
 	"strings"
 
 	"./extended_kalman_filter"
-	"./kalman_filter"
 	"./measurement_package"
+	"./tools"
 	"gonum.org/v1/gonum/mat"
 )
-
-func check(err error, fName string) {
-	if err != nil {
-		fmt.Println("Could not open file", fName)
-		panic(err)
-	}
-}
 
 func main() {
 	// Open file with sensor data
@@ -28,6 +21,9 @@ func main() {
 	inF, err := os.Open(inFileName)
 	check(err, inFileName)
 	defer inF.Close()
+
+	gTruthValues := [][]float64{}
+	predictedValues := [][]float64{}
 
 	scanner := bufio.NewScanner(inF)
 	for scanner.Scan() {
@@ -59,12 +55,28 @@ func main() {
 		vy_gt, _ := strconv.ParseFloat(inputValues[inputLength-1], 64)
 		gtValues := []float64{x_gt, y_gt, vx_gt, vy_gt}
 		fmt.Println(gtValues)
+		gTruthValues = append(gTruthValues, gtValues)
+		predictedValues = append(predictedValues, []float64{fusionEKF.Ekf.X_.At(0, 0), fusionEKF.Ekf.X_.At(1, 0), fusionEKF.Ekf.X_.At(2, 0), fusionEKF.Ekf.X_.At(3, 0)})
+		fmt.Println([]float64{fusionEKF.Ekf.X_.At(0, 0), fusionEKF.Ekf.X_.At(1, 0), fusionEKF.Ekf.X_.At(2, 0), fusionEKF.Ekf.X_.At(3, 0)})
 	}
 
 	// Check for error in file reading
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
-	test := kalman_filter.New()
-	test.Predict()
+	RMSE_values := tools.CalculateRMSE(predictedValues, gTruthValues)
+	storeStates(gTruthValues, predictedValues, RMSE_values)
+	fmt.Println(RMSE_values)
+	fmt.Println("EKF: Position states stored in file '../data/filter_output.txt' in format (px, py).")
+}
+
+func check(err error, fName string) {
+	if err != nil {
+		fmt.Println("Could not open file", fName)
+		panic(err)
+	}
+}
+
+func storeStates(gTruthValues [][]float64, predictedValues [][]float64, RMSE_values []float64) {
+	return
 }
