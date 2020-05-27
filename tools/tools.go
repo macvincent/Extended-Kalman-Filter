@@ -9,7 +9,9 @@ import (
 )
 
 func CalculateJacobian(x_state *mat.Dense) *mat.Dense {
-	Hj := *mat.NewDense(3, 4, nil)
+	Hj := *mat.NewDense(3, 4, []float64{0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0})
 	px := x_state.At(0, 0)
 	py := x_state.At(1, 0)
 	vx := x_state.At(2, 0)
@@ -49,10 +51,10 @@ func CalculateRMSE(estimations [][]float64, ground_truth [][]float64) []float64 
 }
 
 func ToPolar(measurement_pack *measurement_package.MeasurementPackage) *mat.Dense {
-	px := measurement_pack.RawMeasurements.At(0, 0) * math.Cos(measurement_pack.RawMeasurements.At(0, 1))
-	py := measurement_pack.RawMeasurements.At(0, 0) * math.Sin(measurement_pack.RawMeasurements.At(0, 1))
-	vx := measurement_pack.RawMeasurements.At(0, 2) * math.Cos(measurement_pack.RawMeasurements.At(0, 1))
-	vy := measurement_pack.RawMeasurements.At(0, 2) * math.Sin(measurement_pack.RawMeasurements.At(0, 1))
+	px := measurement_pack.RawMeasurements.At(0, 0) * math.Cos(measurement_pack.RawMeasurements.At(1, 0))
+	py := measurement_pack.RawMeasurements.At(0, 0) * math.Sin(measurement_pack.RawMeasurements.At(1, 0))
+	vx := measurement_pack.RawMeasurements.At(2, 0) * math.Cos(measurement_pack.RawMeasurements.At(1, 0))
+	vy := measurement_pack.RawMeasurements.At(2, 0) * math.Sin(measurement_pack.RawMeasurements.At(1, 0))
 	polar := *mat.NewDense(4, 1, []float64{px, py, vx, vy})
 	return &polar
 }
