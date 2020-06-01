@@ -42,11 +42,11 @@ if data.mode == 'r':
         filter_y_values.append(y)
 
 # # Read filter values
-# data = open('../data/rmse_data.txt', "r")
-# if data.mode == 'r':
-#     contents = data.readlines()
-#     for line in contents:
-#         rmse_values.append(float(line.split('\n')[0]))
+data = open('./data/rmse_data.txt', "r")
+if data.mode == 'r':
+    contents = data.readlines()
+    for line in contents:
+        rmse_values.append(float(line.split('\n')[0]))
 
 # display results
 fig = plt.figure()
@@ -61,8 +61,8 @@ legend1 = ax.legend(['Radar Reading', 'Ladar Reading', 'EKF Output'], loc="upper
 ax.add_artist(legend1)
 fig.set_size_inches(10,7)
 
-# props = dict(boxstyle='round', facecolor='white', alpha=0.2)
-# ax.text(12, -8, 'RMSE Values:\npx = {}\npy = {}\nvx = {}\nvy = {}'.format(rmse_values[0], rmse_values[1], rmse_values[2], rmse_values[3]), fontsize=12, bbox=props)
+props = dict(boxstyle='round', facecolor='white', alpha=0.2)
+ax.text(12, -8, 'RMSE Values:\npx = {}\npy = {}\nvx = {}\nvy = {}'.format(rmse_values[0], rmse_values[1], rmse_values[2], rmse_values[3]), fontsize=12, bbox=props)
 
 plt.savefig('./data/result.png')
 plt.show()
