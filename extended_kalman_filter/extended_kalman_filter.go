@@ -43,6 +43,7 @@ func (filter *FusionEKF) ProcessMeasurement(measurement_pack *measurement_packag
 		return
 	}
 	dt := (measurement_pack.TimeStamp - filter.previousTimeStamp) / 1000000.0
+	filter.previousTimeStamp = measurement_pack.TimeStamp
 	filter.updateQ(dt)
 	filter.Ekf.Predict()
 	if measurement_pack.SensorType == measurement_package.LASER {
