@@ -28,28 +28,26 @@ func main() {
 	scanner := bufio.NewScanner(inF)
 	for scanner.Scan() {
 		inputValues := strings.Split(scanner.Text(), "\t")
-		// sensorType := inputValues[0]
+		sensorType := inputValues[0]
 		inputLength := len(inputValues)
-		// if sensorType == "L" {
-		// 	sensorType_ := measurement_package.LASER
-		// 	x, _ := strconv.ParseFloat(inputValues[1], 64)
-		// 	y, _ := strconv.ParseFloat(inputValues[2], 64)
-		// 	rawMeasurements := mat.NewDense(2, 1, []float64{x, y})
-		// 	timeStamp, _ := strconv.ParseFloat(inputValues[3], 64)
-		// 	measPackage := measurement_package.NewMeasurementPackage(sensorType_, timeStamp, rawMeasurements)
-		// 	fusionEKF.ProcessMeasurement(measPackage)
-		// }
-		// else if sensorType == "R" {
-		sensorType_ := measurement_package.RADAR
-		rho_measured, _ := strconv.ParseFloat(inputValues[1], 64)
-		phi_measured, _ := strconv.ParseFloat(inputValues[2], 64)
-		rhodot_measured, _ := strconv.ParseFloat(inputValues[3], 64)
-		rawMeasurements := mat.NewDense(3, 1, []float64{rho_measured, phi_measured, rhodot_measured})
-		timeStamp, _ := strconv.ParseFloat(inputValues[4], 64)
-		measPackage := measurement_package.NewMeasurementPackage(sensorType_, timeStamp, rawMeasurements)
-		fusionEKF.ProcessMeasurement(measPackage)
-		// }
-		// fusionEKF.ProcessMeasurement(meas_package);
+		if sensorType == "L" {
+			sensorType_ := measurement_package.LASER
+			x, _ := strconv.ParseFloat(inputValues[1], 64)
+			y, _ := strconv.ParseFloat(inputValues[2], 64)
+			rawMeasurements := mat.NewDense(2, 1, []float64{x, y})
+			timeStamp, _ := strconv.ParseFloat(inputValues[3], 64)
+			measPackage := measurement_package.NewMeasurementPackage(sensorType_, timeStamp, rawMeasurements)
+			fusionEKF.ProcessMeasurement(measPackage)
+		} else if sensorType == "R" {
+			sensorType_ := measurement_package.RADAR
+			rho_measured, _ := strconv.ParseFloat(inputValues[1], 64)
+			phi_measured, _ := strconv.ParseFloat(inputValues[2], 64)
+			rhodot_measured, _ := strconv.ParseFloat(inputValues[3], 64)
+			rawMeasurements := mat.NewDense(3, 1, []float64{rho_measured, phi_measured, rhodot_measured})
+			timeStamp, _ := strconv.ParseFloat(inputValues[4], 64)
+			measPackage := measurement_package.NewMeasurementPackage(sensorType_, timeStamp, rawMeasurements)
+			fusionEKF.ProcessMeasurement(measPackage)
+		}
 		x_gt, _ := strconv.ParseFloat(inputValues[inputLength-4], 64)
 		y_gt, _ := strconv.ParseFloat(inputValues[inputLength-3], 64)
 		vx_gt, _ := strconv.ParseFloat(inputValues[inputLength-2], 64)
