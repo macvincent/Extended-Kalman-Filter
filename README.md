@@ -3,6 +3,10 @@ Udacity Self-Driving Car Engineer Nanodegree Program
 
 This project utilizes an Extended Kalman Filter to estimate the state of a moving object with noisy lidar and radar measurements. By passing the radar and ladar readings through the Extended Kalman Filter, an output with a higher degree of certainty and also a lower RMSE value when compared to ground truth values was gotten.
 
+This projects depends on the [go num library](https://github.com/gonum/gonum#installation). To install run:
+
+`go get -u gonum.org/v1/gonum/...`
+
 The main program can be built and run by doing the following from the project top directory.
 
 `go run .\main.go`
